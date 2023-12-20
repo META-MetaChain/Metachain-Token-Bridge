@@ -1,0 +1,9 @@
+node_modules
+dist
+synpress.config.ts
+tailwind.config.js
+
+packages/META-token-bridge/craco.config.js
+packages/META-token-bridge/prettier.config.js
+packages/META-token-bridge/build/static/js/*.js
+packages/META-token-bridge/tests/**/*.ts

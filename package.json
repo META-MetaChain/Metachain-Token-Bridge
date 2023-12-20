@@ -1,0 +1,31 @@
+{
+  "name": "META-token-bridge-ui-mono",
+  "private": true,
+  "license": "Apache-2.0",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "yarn workspace META-token-bridge-ui dev",
+    "build": "yarn workspace META-token-bridge-ui build",
+    "start": "yarn build && yarn workspace META-token-bridge-ui start",
+    "audit:ci": "audit-ci --config ./audit-ci.jsonc",
+    "test:ci": "yarn workspace META-token-bridge-ui test:ci",
+    "test:e2e": "yarn workspace META-token-bridge-ui e2e:run --browser chrome",
+    "test:ci:e2e": "start-server-and-test 'yarn build && yarn workspace META-token-bridge-ui start' http-get://localhost:3000 'env-cmd -f ./packages/META-token-bridge-ui/.e2e.env synpress run --project ./packages/META-token-bridge-ui --configFile synpress.config.ts'",
+    "test:ci:e2e:install": "yarn workspace META-token-bridge-ui e2e:install",
+    "test:e2e:cctp": "yarn workspace META-token-bridge-ui e2e:run:cctp",
+    "prettier:check": "./node_modules/.bin/prettier --check .",
+    "prettier:format": "./node_modules/.bin/prettier --write .",
+    "lint": "yarn workspace META-token-bridge-ui lint",
+    "lint:fix": "yarn workspace META-token-bridge-ui lint:fix"
+  },
+  "keywords": [],
+  "author": "",
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "audit-ci": "^6.3.0"
+  }
+}

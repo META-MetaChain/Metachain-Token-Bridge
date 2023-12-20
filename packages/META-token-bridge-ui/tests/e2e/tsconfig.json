@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "baseUrl": "../../../../",
+    "types": [
+      "cypress.d.ts",
+      "@synthetixio/synpress/support",
+      "cypress-wait-until",
+      "@testing-library/cypress"
+    ],
+    "outDir": "./output"
+  },
+  "include": ["**/*.*"],
+  "exclude": ["node_modules"]
+}

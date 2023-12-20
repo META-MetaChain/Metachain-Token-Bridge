@@ -1,0 +1,25 @@
+import { isNetwork } from '../util/networks'
+import { useNetworksAndSigners } from './useNetworksAndSigners'
+
+export type ChainLayer = 'L1' | 'L2' | 'Orbit'
+
+function getChainLayerByChainId(chainId: number): ChainLayer {
+  const { isEthereumMainnetOrTestnet, ismetachain } = isNetwork(chainId)
+
+  if (isEthereumMainnetOrTestnet) {
+    return 'L1'
+  }
+  if (ismetachain) {
+    return 'L2'
+  }
+  return 'Orbit'
+}
+
+export const useChainLayers = () => {
+  const { l1, l2 } = useNetworksAndSigners()
+
+  return {
+    parentLayer: getChainLayerByChainId(l1.network.id),
+    layer: getChainLayerByChainId(l2.network.id)
+  }
+}

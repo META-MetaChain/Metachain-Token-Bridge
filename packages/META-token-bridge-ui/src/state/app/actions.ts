@@ -1,0 +1,100 @@
+import {
+  METATokenBridge,
+  ERC20BridgeToken
+} from '../../hooks/METATokenBridge.types'
+import { Context } from '..'
+import { ConnectionState } from '../../util'
+import { WhiteListState, WarningTokens } from './state'
+
+export const setConnectionState = (
+  { state }: Context,
+  connectionState: ConnectionState
+) => {
+  state.app.connectionState = connectionState
+}
+
+export const setChainIds = (
+  { state }: Context,
+  payload: { l1NetworkChainId: number; l2NetworkChainId: number }
+) => {
+  state.app.l1NetworkChainId = payload.l1NetworkChainId
+  state.app.l2NetworkChainId = payload.l2NetworkChainId
+}
+
+export const setIsDepositMode = (
+  { state }: Context,
+  isDepositMode: boolean
+) => {
+  state.app.isDepositMode = isDepositMode
+}
+
+export const setSelectedToken = (
+  { state }: Context,
+  token: ERC20BridgeToken | null
+) => {
+  state.app.selectedToken = token ? { ...token } : null
+}
+
+export const reset = ({ state }: Context, newChainId: number) => {
+  if (
+    state.app.l1NetworkChainId !== newChainId &&
+    state.app.l2NetworkChainId !== newChainId
+  ) {
+    // only reset the selected token if we are not switching between the pair of l1-l2 networks.
+    // we dont want to reset the token if we are switching from Goerli to metachain Goerli for example
+    // because we are maybe in the process of auto switching the network and triggering deposit or withdraw
+    state.app.selectedToken = null
+  }
+
+  state.app.METATokenBridge = {} as METATokenBridge
+  state.app.verifying = WhiteListState.ALLOWED
+  state.app.connectionState = ConnectionState.LOADING
+  state.app.METATokenBridgeLoaded = false
+}
+
+export const setWarningTokens = (
+  { state }: Context,
+  warningTokens: WarningTokens
+) => {
+  state.app.warningTokens = warningTokens
+}
+
+export const setWhitelistState = (
+  { state }: Context,
+  verifying: WhiteListState
+) => {
+  state.app.verifying = verifying
+}
+
+export const setMETATokenBridgeLoaded = (
+  { state }: Context,
+  loaded: boolean
+) => {
+  state.app.METATokenBridgeLoaded = loaded
+}
+
+export const setMETATokenBridge = (
+  { state, actions }: Context,
+  atb: METATokenBridge
+) => {
+  state.app.METATokenBridge = atb
+  if (atb && !state.app.METATokenBridgeLoaded) {
+    actions.app.setMETATokenBridgeLoaded(true)
+  }
+}
+
+export const getPendingTransactions = ({ state }: Context) => {
+  return state.app.pendingTransactions
+}
+
+export const l1DepositsWithUntrackedL2Messages = ({ state }: Context) => {
+  return state.app.l1DepositsWithUntrackedL2Messages
+}
+
+export const getSortedTransactions = ({ state }: Context) => {
+  return state.app.sortedTransactions
+}
+
+export const getFailedRetryablesToRedeem = ({ state }: Context) => {
+  return state.app.failedRetryablesToRedeem
+}
